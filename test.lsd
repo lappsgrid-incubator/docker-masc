@@ -1,0 +1,41 @@
+#!/usr/bin/env lsd
+
+String id = null
+
+if (isRunning()) {
+	println "The Docker container is already running."
+}
+else {
+	println "Starting the Docker container."
+	id = "docker run -d -p 8080:8080 --name masc lappsgrid/masc".execute().text
+	println "Waiting for the container to finish startup."	
+	sleep(2000)
+}
+
+String root = "http://localhost:8080/MascDataSource/2.2.0/services"
+
+['MascTextSource', 'MascLifSource', 'MascJsonSource'].each { String name ->
+	println "Testing $name"
+	def masc = new DataSourceClient("${root}/${name}")
+	def keys = masc.list()
+	String json = masc.get(keys[0])
+	Data data = Serializer.parse(json, Data)
+	if (data.discriminator == Uri.ERROR) {
+		println "Service failed: ${data.payload}"
+	}
+	else {
+		println "Service is working."
+	}
+}
+
+if (id != null) {
+	println "Shutting down the Docker container."
+	println "docker rm -f $id".execute().text
+}
+
+println "Done"
+return
+
+boolean isRunning() {
+	"docker ps".execute().text.contains('lappsgrid/masc')
+}

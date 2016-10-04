@@ -4,7 +4,7 @@
 # to download the packages.
 
 SERVER=http://www.anc.org/downloads/docker
-PACKAGE_LIST="MASC-3.0.0 MascDataSource_2.2.0"
+PACKAGE_LIST="MASC-3.0.0 MASC-3.0.0-json MascDataSource_2.2.0"
 
 if [ ! -d packages ] ; then
 	mkdir packages
