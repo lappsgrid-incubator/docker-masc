@@ -3,10 +3,11 @@ IMAGE=lappsgrid/masc
 VERSION=1.1.0
 
 latest:
-	#./packages.sh update
+	./packages.sh update
 	$(DOCKER) build -t $(IMAGE) .
 
 masc:
+	./packages.sh update
 	$(DOCKER) build -t $(IMAGE):$(VERSION) .
 	
 push:
