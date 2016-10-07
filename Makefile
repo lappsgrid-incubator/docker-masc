@@ -14,7 +14,7 @@ push:
 	$(DOCKER)  push $(IMAGE)
 	
 tag:
-	if [ -n "$(TAG)" ] ; then $(DOCKER) tag $(IMAGE) $(IMAGE):$(VERSION) ; $(DOCKER) push $(IMAGE):$(VERSION); fi
+	$(DOCKER) tag $(IMAGE) $(IMAGE):$(VERSION) && $(DOCKER) push $(IMAGE):$(VERSION)
 
 run:
 	docker run -d -p 8080:8080 --name masc lappsgrid/masc
